@@ -1,3 +1,4 @@
+import abc
 from random import randint
 from typing import Any
 
@@ -41,10 +42,22 @@ class Spielfeld:
         pass
 
 
-class Spieler:
+class Spieler(abc.ABC):
     def __init__(self, farbe: str, name: str):
         self.farbe = farbe
         self.name = name
+
+    @abc.abstractmethod
+    def ziehen(self) -> int:
+        pass
+
+
+class Mensch(Spieler):
+    def ziehen(self) -> int:
+        pass
+
+    def __init__(self, farbe: str, name: str, ):
+        super().__init__(farbe, name)
 
 
 class Computer(Spieler):
