@@ -50,11 +50,26 @@ class Spieler(abc.ABC):
     @abc.abstractmethod
     def ziehen(self) -> int:
         pass
+    @property
+    def farbe(self):
+        return self._farbe
 
+    @farbe.setter
+    def farbe(self, value):
+        if value == "X":
+            self._farbe = "O"
+        else :
+            self._farbe = value
 
 class Mensch(Spieler):
     def ziehen(self) -> int:
-        pass
+        """
+        Fordert den Spieler an, in welcher Spalte er/sie seinen/ihren Zug setzen möchte.
+        :return: Spalte als int
+        """
+        print(f'{self.name} Eine Zahl zwischen 1 bis 7')
+        x = input()
+        return int(x)
 
     def __init__(self, farbe: str, name: str, ):
         super().__init__(farbe, name)
@@ -76,4 +91,7 @@ class Computer(Spieler):
 
 
 if __name__ == '__main__':
+    grid=Spielfeld()
+    print(grid)
+
     pass
