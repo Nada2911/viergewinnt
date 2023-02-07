@@ -25,7 +25,6 @@ class Spielfeld:
             print('Kein gültiger Zug')  # TODO: Entscheiden: soll das hier ausgegeben werden oder im Zuge von main
             return 0
 
-
     @property
     def grid(self):
         return self.__grid
@@ -33,8 +32,27 @@ class Spielfeld:
     def __repr__(self):
         return f'grid:{self.grid}'
 
-    def gewinn_abfrage(self):  # TODO
-        pass
+    def gewinn_abfrage(self, farbe: str) -> bool:
+        """
+        Wenn die gleiche Farbe 4-mal in einer beliebigen Richtung hintereinander vorkommt, so wurde das Spiel von dem
+        Spieler mit dieser Farbe gewonnen. Um alle Richtungen zu testen, wird die Liste nachbarn benötigt.
+        :param farbe: des Spielers, der den letzten Zug getätigt hat
+        :return: True bei Gewinn, sonst False
+        """
+        nachbarn = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        for zeile in range(len(self.__grid)):
+            for spalte in range(len(self.__grid[zeile])):
+                if self.__grid[zeile][spalte] == farbe:
+                    for n in nachbarn:
+                        gewinn_vier = 1
+                        pos = ((zeile + n[0] * 3), (spalte + n[1] * 3))
+                        if (0 <= pos[0] < len(self.__grid)) and (0 <= pos[1] < len(self.__grid[zeile])):
+                            for i in range(1, 4, 1):
+                                if self.__grid[zeile + n[0] * i][spalte + n[1] * i] == farbe:
+                                    gewinn_vier += 1
+                                if gewinn_vier == 4:
+                                    return True
+        return False
 
     def gueltig(self, spalte: int) -> bool:
         """
@@ -45,7 +63,7 @@ class Spielfeld:
         if not 0 <= spalte <= 6:
             return False
         for i in range(len(self.__grid)):
-            if self.__grid [i] [spalte] == "X":
+            if self.__grid[i][spalte] == "X":
                 return True
         return False
 
@@ -61,6 +79,7 @@ class Spieler(abc.ABC):
     @abc.abstractmethod
     def ziehen(self) -> int:
         pass
+
     @property
     def farbe(self):
         return self._farbe
@@ -69,8 +88,9 @@ class Spieler(abc.ABC):
     def farbe(self, value):
         if value == "X":
             self._farbe = "O"
-        else :
+        else:
             self._farbe = value
+
 
 class Mensch(Spieler):
     def ziehen(self) -> int:
@@ -82,14 +102,14 @@ class Mensch(Spieler):
         x = input()
         return int(x)
 
-    def __init__(self, farbe: str, name: str,):
+    def __init__(self, farbe: str, name: str, ):
         super().__init__(farbe, name)
 
 
 class Computer(Spieler):
 
-    def __init__(self, farbe: str, name: str):
-        super().__init__(farbe, name)
+    def __init__(self):
+        super().__init__('C', 'Computer')
 
     def ziehen(self) -> int:
         """
@@ -102,7 +122,7 @@ class Computer(Spieler):
 
 
 if __name__ == '__main__':
-    grid=Spielfeld()
+    grid = Spielfeld()
     print(grid)
 
     pass
