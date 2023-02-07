@@ -25,6 +25,7 @@ class Spielfeld:
             print('Kein gültiger Zug')  # TODO: Entscheiden: soll das hier ausgegeben werden oder im Zuge von main
             return 0
 
+
     @property
     def grid(self):
         return self.__grid
@@ -36,7 +37,17 @@ class Spielfeld:
         pass
 
     def gueltig(self, spalte: int) -> bool:
-        pass
+        """
+        Testet ob die Spalte im Spielfeld existiert und ob der Zug moeglich ist.
+        :param spalte: Spalte in der ein Zug moeglich sein soll.
+        :return: True bei gueltig, sonst False.
+        """
+        if not 0 <= spalte <= 6:
+            return False
+        for i in range(len(self.__grid)):
+            if self.__grid [i] [spalte] == "X":
+                return True
+        return False
 
     def spielfeld_ausgeben(self):
         pass
@@ -71,7 +82,7 @@ class Mensch(Spieler):
         x = input()
         return int(x)
 
-    def __init__(self, farbe: str, name: str, ):
+    def __init__(self, farbe: str, name: str,):
         super().__init__(farbe, name)
 
 
