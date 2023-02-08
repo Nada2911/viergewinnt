@@ -130,12 +130,40 @@ class Computer(Spieler):
         spalte = randint(0, 6)
         return spalte
 
-def spiel_kofigurieren():
-    pass #TODO
+def spiel_kofigurieren()->tuple[Spieler,Spieler]:
+    """
+    Fragt nach den Einstellungen für ein neues Spiel. Die Optionen sind 'S' für Multiplayer-Modus und 'C', um gegen den Computer zu spielen.
+    Name und Farbe für Spieler wird erfragt.
+    :return: Die Spieler eines neuen Spiels.
+    """
+    print("S steht für Multiplayer-Modus und C für den Computer")
+    s1 = None
+    gegner = input()
+    if gegner == 'C':
+        s1 = Computer()
+    elif gegner == 'S':
+        name1 = input('SpielerIn 1 bitte Name angeben:')
+        farbe1 = input('SpielerIn 1 bitte Farbe wählen:')
+        s1 = Mensch(farbe1, name1)
+    else:
+        print('nicht gueltig')
+    name2 = input('SpielerIn 2 bitte Name angeben:')
+    farbe2 = input('SpielerIn 2 bitte Farbe wählen:')
+    s2 = Mensch(farbe2, name2)
+    return s1, s2
+
+
+
+
 
 if __name__ == '__main__':
     grid = Spielfeld()
     print(grid)
     grid.spielfeld_ausgeben()
-    grid.spielfeld_aktualisieren(46,"rot")
+    grid.spielfeld_aktualisieren(5,"rot")
+    print('SpielerIn 2 bitte Name angeben:')
+    name1 = input()
+    print('SpielerIn 2 bitte Farbe wählen:')
+    farbe1 = input()
+    s1 = Mensch(farbe1, name1)
     pass
