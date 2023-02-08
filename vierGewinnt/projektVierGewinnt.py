@@ -96,6 +96,10 @@ class Spieler(abc.ABC):
         else:
             self._farbe = value
 
+    def __repr__(self):
+        return f'{self.name} Name {self.farbe} Farbe'
+
+
 
 class Mensch(Spieler):
     def ziehen(self) -> int:
@@ -114,12 +118,16 @@ class Mensch(Spieler):
 
     def __init__(self, farbe: str, name: str, ):
         super().__init__(farbe, name)
+    def __repr__(self):
+        return super().__repr__()
 
 
 class Computer(Spieler):
 
     def __init__(self):
         super().__init__('C', 'Computer')
+    def __repr__(self):
+        return super().__repr__()
 
     def ziehen(self) -> int:
         """
