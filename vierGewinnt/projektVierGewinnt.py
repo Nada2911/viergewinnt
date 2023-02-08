@@ -138,6 +138,9 @@ class Computer(Spieler):
         spalte = randint(0, 6)
         return spalte
 
+    def __repr__(self):
+        return super().__repr__()
+
 def spiel_konfigurieren()->tuple[Spieler,Spieler]:
     """
     Fragt nach den Einstellungen für ein neues Spiel. Die Optionen sind 'S' für Multiplayer-Modus und 'C', um gegen den Computer zu spielen.
@@ -161,16 +164,13 @@ def spiel_konfigurieren()->tuple[Spieler,Spieler]:
     return s1, s2
 
 
-
-
-
 if __name__ == '__main__':
     grid = Spielfeld()
     spieler1, spieler2 = spiel_konfigurieren()
     weitermachen = True
     an_der_Reihe = spieler1
-    gueltig = 0
     while weitermachen:
+        gueltig = 0
         while gueltig == 0:
             spalte = an_der_Reihe.ziehen()
             if spalte == -10:
@@ -182,7 +182,8 @@ if __name__ == '__main__':
             weitermachen = False
         if an_der_Reihe == spieler1:
             an_der_Reihe = spieler2
-        else: an_der_Reihe = spieler1
+        else:
+            an_der_Reihe = spieler1
 
 
 
