@@ -68,7 +68,12 @@ class Spielfeld:
         return False
 
     def spielfeld_ausgeben(self):
-        pass
+        """
+        Wurde verkehrt umgesetzt, da es einfacher ist.
+        :return: Gibt nichts zurueck.
+        """
+        for z in range(len(self.__grid) -1, -1, -1):
+            print(self.__grid[z])
 
 
 class Spieler(abc.ABC):
@@ -120,9 +125,12 @@ class Computer(Spieler):
         spalte = randint(0, 6)
         return spalte
 
+def spiel_kofigurieren():
+    pass #TODO
 
 if __name__ == '__main__':
     grid = Spielfeld()
     print(grid)
-
+    grid.spielfeld_ausgeben()
+    grid.spielfeld_aktualisieren(46,"rot")
     pass
