@@ -72,7 +72,7 @@ class Spielfeld:
         Wurde verkehrt umgesetzt, da es einfacher ist.
         :return: Gibt nichts zurueck.
         """
-        for z in range(len(self.__grid) -1, -1, -1):
+        for z in range(len(self.__grid) - 1, -1, -1):
             print(self.__grid[z])
 
 
@@ -101,11 +101,16 @@ class Mensch(Spieler):
     def ziehen(self) -> int:
         """
         Fordert den Spieler an, in welcher Spalte er/sie seinen/ihren Zug setzen möchte.
-        :return: Spalte als int
+        Ungültiger Input wird verhindert.
+        :return: Spalte als int, -1 bei ungültigem Input
         """
         print(f'{self.name} Eine Zahl zwischen 1 bis 7')
-        x = input()
-        return int(x)
+        x = 0
+        try:
+            x = int(input())
+        except ValueError:
+            print(f'Bitte eine Zahl zwischen 1 und 7 angeben.')
+        return x - 1
 
     def __init__(self, farbe: str, name: str, ):
         super().__init__(farbe, name)
