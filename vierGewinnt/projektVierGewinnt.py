@@ -138,7 +138,7 @@ class Computer(Spieler):
         spalte = randint(0, 6)
         return spalte
 
-def spiel_kofigurieren()->tuple[Spieler,Spieler]:
+def spiel_konfigurieren()->tuple[Spieler,Spieler]:
     """
     Fragt nach den Einstellungen für ein neues Spiel. Die Optionen sind 'S' für Multiplayer-Modus und 'C', um gegen den Computer zu spielen.
     Name und Farbe für Spieler wird erfragt.
@@ -166,12 +166,23 @@ def spiel_kofigurieren()->tuple[Spieler,Spieler]:
 
 if __name__ == '__main__':
     grid = Spielfeld()
-    print(grid)
-    grid.spielfeld_ausgeben()
-    grid.spielfeld_aktualisieren(5,"rot")
-    print('SpielerIn 2 bitte Name angeben:')
-    name1 = input()
-    print('SpielerIn 2 bitte Farbe wählen:')
-    farbe1 = input()
-    s1 = Mensch(farbe1, name1)
-    pass
+    spieler1, spieler2 = spiel_konfigurieren()
+    weitermachen = True
+    an_der_Reihe = spieler1
+    gueltig = 0
+    while weitermachen:
+        while gueltig == 0:
+            spalte = an_der_Reihe.ziehen()
+            if spalte == -10:
+                weitermachen = False
+                break
+            gueltig = grid.spielfeld_aktualisieren(spalte, an_der_Reihe.farbe)
+        gewonnen = grid.gewinn_abfrage(an_der_Reihe.farbe)
+        if gewonnen:
+            weitermachen = False
+        if an_der_Reihe == spieler1:
+            an_der_Reihe = spieler2
+        else: an_der_Reihe = spieler1
+
+
+
