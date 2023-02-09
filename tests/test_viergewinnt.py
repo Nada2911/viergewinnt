@@ -26,6 +26,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(self.s2.name, 'Susi')
         self.assertEqual(self.s3.farbe, 'O')
 
+    def test_init_spielfeld(self):
+        anfangs_konfiguration = [['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+                                 ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+                                 ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+                                 ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+                                 ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+                                 ['X', 'X', 'X', 'X', 'X', 'X', 'X']]
+        self.assertEqual(self.feld.grid, anfangs_konfiguration)
     def tearDown(self) -> None:
         pass
 
