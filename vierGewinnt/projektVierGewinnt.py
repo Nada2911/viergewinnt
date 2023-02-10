@@ -39,7 +39,7 @@ class Spielfeld:
         :param farbe: des Spielers, der den letzten Zug getätigt hat
         :return: True bei Gewinn, sonst False
         """
-        nachbarn = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        nachbarn = [(0, 1), (1, -1), (1, 0), (1, 1)]
         for zeile in range(len(self.__grid)):
             for spalte in range(len(self.__grid[zeile])):
                 if self.__grid[zeile][spalte] == farbe:
@@ -56,7 +56,7 @@ class Spielfeld:
 
     def gueltig(self, spalte: int) -> bool:
         """
-        Testet ob die Spalte im Spielfeld existiert und ob der Zug moeglich ist.
+        Testet, ob die Spalte im Spielfeld existiert und ob der Zug moeglich ist.
         :param spalte: Spalte in der ein Zug moeglich sein soll.
         :return: True bei gueltig, sonst False.
         """
@@ -100,7 +100,6 @@ class Spieler(abc.ABC):
         return f'{self.name} Name {self.farbe} Farbe'
 
 
-
 class Mensch(Spieler):
     def ziehen(self) -> int:
         """
@@ -109,15 +108,18 @@ class Mensch(Spieler):
         :return: Spalte als int, -1 bei ungültigem Input
         """
         print(f'{self.name} Eine Zahl zwischen 1 bis 7')
-        x = 0
+        x = None
         try:
             x = int(input())
         except ValueError:
             print(f'Bitte eine Zahl zwischen 1 und 7 angeben.')
+        if x == 0:
+            return -10
         return x - 1
 
     def __init__(self, farbe: str, name: str, ):
         super().__init__(farbe, name)
+
     def __repr__(self):
         return super().__repr__()
 
@@ -126,6 +128,7 @@ class Computer(Spieler):
 
     def __init__(self):
         super().__init__('C', 'Computer')
+
     def __repr__(self):
         return super().__repr__()
 
@@ -138,18 +141,16 @@ class Computer(Spieler):
         spalte = randint(0, 6)
         return spalte
 
-    def __repr__(self):
-        return super().__repr__()
 
-def spiel_konfigurieren()->tuple[Spieler,Spieler]:
+def spiel_konfigurieren() -> tuple[Spieler, Spieler]:
     """
     Fragt nach den Einstellungen für ein neues Spiel. Die Optionen sind 'S' für Multiplayer-Modus und 'C', um gegen den Computer zu spielen.
     Name und Farbe für Spieler wird erfragt.
     :return: Die Spieler eines neuen Spiels.
     """
-    print("S steht für Multiplayer-Modus und C für den Computer")
+    print("Bitte den Spielmodus auswählen: \n S steht für Multiplayer-Modus und C für den Computer")
     s1 = None
-    gegner = input()
+    gegner = input('Modus: ')
     if gegner == 'C':
         s1 = Computer()
     elif gegner == 'S':
@@ -161,6 +162,7 @@ def spiel_konfigurieren()->tuple[Spieler,Spieler]:
     name2 = input('SpielerIn 2 bitte Name angeben:')
     farbe2 = input('SpielerIn 2 bitte Farbe wählen:')
     s2 = Mensch(farbe2, name2)
+    print(f'{s1.name}:{s1.farbe} spielt gegen {s2.name}:{s2.farbe} \n Um das Spiel abzubrechen als Spalte 0 wählen.')
     return s1, s2
 
 
@@ -169,6 +171,7 @@ if __name__ == '__main__':
     spieler1, spieler2 = spiel_konfigurieren()
     weitermachen = True
     an_der_Reihe = spieler1
+    input(f'{spieler1.name} beginnt das Spiel. \n Zum Starten eine beliebige Taste drücken.')
     while weitermachen:
         gueltig = 0
         while gueltig == 0:
@@ -184,6 +187,3 @@ if __name__ == '__main__':
             an_der_Reihe = spieler2
         else:
             an_der_Reihe = spieler1
-
-
-
