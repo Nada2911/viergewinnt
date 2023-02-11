@@ -39,6 +39,11 @@ class MyTestCase(unittest.TestCase):
 
     def test_gueltig(self):
         self.assertTrue(self.feld.gueltig(5))
+        self.assertTrue(self.feld.gueltig(4))
+        self.assertFalse(self.feld.gueltig(8))
+        self.assertFalse(self.feld.gueltig(10))
+        self.assertFalse(self.feld.gueltig(12))
+
 
     def test_aktualisieren(self):
         for i in range(6):
