@@ -182,8 +182,11 @@ if __name__ == '__main__':
             gueltig = grid.spielfeld_aktualisieren(spalte, an_der_Reihe.farbe)
         gewonnen = grid.gewinn_abfrage(an_der_Reihe.farbe)
         if gewonnen:
+            print(f'an_der_reihe')
             weitermachen = False
         if an_der_Reihe == spieler1:
             an_der_Reihe = spieler2
         else:
             an_der_Reihe = spieler1
+
+
