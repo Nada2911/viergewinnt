@@ -1,8 +1,10 @@
 import unittest
-from vierGewinnt.projektVierGewinnt import Spieler, Spielfeld, Mensch, Computer
+from unittest import mock
+from vierGewinnt.projektVierGewinnt import Spieler, Spielfeld, Mensch, Computer, spiel_konfigurieren
 
 
 class MyTestCase(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
         pass
@@ -54,8 +56,8 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(self.feld2.gewinn_abfrage('F'))
         # keine Gewinnposition
         for i in range(1, 10):
-            self.feld3.spielfeld_aktualisieren(10//i, 'R')
-            self.feld3.spielfeld_aktualisieren(10//i, 'K')
+            self.feld3.spielfeld_aktualisieren(10 // i, 'R')
+            self.feld3.spielfeld_aktualisieren(10 // i, 'K')
         self.assertFalse(self.feld3.gewinn_abfrage('K'))
         self.assertFalse(self.feld3.gewinn_abfrage('R'))
         # diagonal von links unten nach rechts oben
@@ -68,11 +70,52 @@ class MyTestCase(unittest.TestCase):
         # diagonal von links oben nach rechts unten
         for i in range(3, 0, -1):
             for j in range(i):
-                self.feld5.spielfeld_aktualisieren(3-i, 'F')
-            self.feld5.spielfeld_aktualisieren(3-i, 'G')
+                self.feld5.spielfeld_aktualisieren(3 - i, 'F')
+            self.feld5.spielfeld_aktualisieren(3 - i, 'G')
         self.feld5.spielfeld_aktualisieren(3, 'G')
         self.assertTrue(self.feld5.gewinn_abfrage('G'))
         self.assertFalse(self.feld5.gewinn_abfrage('F'))
+
+    def test_ziehen_computer(self):
+        zug = [0, 1, 2, 3, 4, 5, 6]
+        self.assertIn(self.s1.ziehen(), zug)
+
+    @mock.patch('Projekt.input', create=True)
+    def test_ziehen_Mensch(self, mocked_input):
+        mocked_input.side_effect = ['B']
+        erg = self.s2.ziehen()
+        self.assertEqual(erg, -1)
+        mocked_input.side_effect = ['4']
+        erg1 = self.s2.ziehen()
+        self.assertEqual(erg1, 3)
+
+    @mock.patch('Projekt.input', create=True)
+    def test_spielkonfiguration(self, mocked_input):
+        mocked_input.side_effect = ['S', 'Susi', 'rot', 'Babsi', 'blau']
+        erg1, erg2 = spiel_konfigurieren()
+        self.assertEqual(erg1.name, 'Susi')
+        self.assertEqual(erg1.farbe, 'rot')
+        self.assertEqual(erg2.name, 'Babsi')
+        self.assertEqual(erg2.farbe, 'blau')
+        self.assertIsInstance(erg1, Mensch)
+        self.assertIsInstance(erg2, Mensch)
+
+    @mock.patch('Projekt.input', create=True)
+    def test_computergegner_konfiguration(self, mocked_input):
+        mocked_input.side_effect = ['C', 'Susi', 'rot']
+        erg3, erg4 = spiel_konfigurieren()
+        self.assertEqual(erg3.name, 'Computer')
+        self.assertEqual(erg3.farbe, 'C')
+        self.assertEqual(erg4.name, 'Susi')
+        self.assertEqual(erg4.farbe, 'rot')
+        self.assertIsInstance(erg4, Mensch)
+        self.assertIsInstance(erg3, Computer)
+        mocked_input.side_effect = ['bla', 'blub', 'beep', 'C', 'Susi', 'S']
+        erg5, erg6 = spiel_konfigurieren()
+        self.assertEqual(erg5.name, 'Computer')
+        self.assertEqual(erg5.farbe, 'C')
+        self.assertEqual(erg6.name, 'Susi')
+        self.assertEqual(erg6.farbe, 'S')
 
     def tearDown(self) -> None:
         pass
