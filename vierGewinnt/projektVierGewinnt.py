@@ -4,6 +4,23 @@ from typing import Any
 
 
 class Spielfeld:
+    """
+    Attributes
+    ----------
+    __grid: list
+        Spielfeld leere Positionen sind durch ein X markiert
+
+    Methods
+    -------
+    spielfeld_aktualisieren(self, spalte: int, farbe: str)
+        Aktualisiert das Spielfeld, um einen gültigen Zug und gibt das aktualisierte Feld aus.
+    gewinn_abfrage(self, farbe: str)
+        erkennt, ob ein Spiel gewonnen wurde
+    gueltig(self, spalte: int)
+        erkennt, ob ein Zug gültig ist
+    spielfeld_ausgeben(self)
+        gibt das Spielfeld auf der Konsole aus
+    """
     def __init__(self):
         field = [['X' for i in range(7)] for j in range(6)]
         self.__grid = field
@@ -11,9 +28,16 @@ class Spielfeld:
     def spielfeld_aktualisieren(self, spalte: int, farbe: str) -> Any:
         """
         Aktualisiert das Spielfeld, um einen gültigen Zug und gibt das aktualisierte Feld aus.
-        :param spalte: Spalte in der, der Zug gesetzt werden soll
-        :param farbe: des Spielers, der gerade an der Reihe ist
-        :return: Spielfeld ausgeben, nachdem ein gültiger Zug gesetzt wurde; 0, wenn der Zug ungültig ist
+        Parameters
+        ----------
+        spalte: int
+            Spalte in der, der Zug gesetzt werden soll
+        farbe: str
+            des Spielers, der gerade an der Reihe ist
+        Returns
+        -------
+        Any
+            Spielfeld ausgeben, nachdem ein gültiger Zug gesetzt wurde; 0, wenn der Zug ungültig ist
         """
         if self.gueltig(spalte):
             for i in range(len(self.__grid)):
@@ -36,8 +60,15 @@ class Spielfeld:
         """
         Wenn die gleiche Farbe 4-mal in einer beliebigen Richtung hintereinander vorkommt, so wurde das Spiel von dem
         Spieler mit dieser Farbe gewonnen. Um alle Richtungen zu testen, wird die Liste nachbarn benötigt.
-        :param farbe: des Spielers, der den letzten Zug getätigt hat
-        :return: True bei Gewinn, sonst False
+        Parameters
+        ----------
+        farbe: str
+            des Spielers, der den letzten Zug getätigt hat
+
+        Returns
+        -------
+        bool
+            True bei Gewinn, sonst False
         """
         nachbarn = [(0, 1), (1, -1), (1, 0), (1, 1)]
         for zeile in range(len(self.__grid)):
@@ -56,9 +87,15 @@ class Spielfeld:
 
     def gueltig(self, spalte: int) -> bool:
         """
-        Testet, ob die Spalte im Spielfeld existiert und ob der Zug moeglich ist.
-        :param spalte: Spalte in der ein Zug moeglich sein soll.
-        :return: True bei gueltig, sonst False.
+
+        Parameters
+        ----------
+        spalte: int
+            Spalte in der ein Zug moeglich sein soll.
+        Returns
+        -------
+        bool
+            True bei gueltig, sonst False.
         """
         if not 0 <= spalte <= 6:
             return False
@@ -70,13 +107,27 @@ class Spielfeld:
     def spielfeld_ausgeben(self):
         """
         Gibt das aktuelle Spielfeld Zeile für Zeile aus. Der Index 0 ist die tiefste Zeile.
-        :return: Gibt nichts zurueck.
+        Returns
+        -------
+        Gibt nichts zurueck.
         """
         for z in range(len(self.__grid) - 1, -1, -1):
             print(self.__grid[z])
 
 
 class Spieler(abc.ABC):
+    """
+    Attributes
+    ----------
+    farbe: str
+        gibt die Farbe für den Spieler an
+    name: str
+        Name des Spielers
+    Methods
+    -------
+    ziehen(self)
+        Erlaubt dem Spieler einen Zug zu machen
+    """
     def __init__(self, farbe: str, name: str):
         self.farbe = farbe
         self.name = name
@@ -101,11 +152,26 @@ class Spieler(abc.ABC):
 
 
 class Mensch(Spieler):
+    """
+    Attributes
+    ----------
+    farbe: str
+        gibt die Farbe für den Spieler an
+    name: str
+        Name des Spielers
+    Methods
+    -------
+    ziehen(self)
+        Erlaubt dem Spieler einen Zug zu machen
+    """
     def ziehen(self) -> int:
         """
         Fordert den Spieler an, in welcher Spalte er/sie seinen/ihren Zug setzen möchte.
         Ungültiger Input wird verhindert.
-        :return: Spalte als int, -1 bei ungültigem Input
+        Returns
+        -------
+        int
+            Spalte als int, -1 bei ungültigem Input
         """
         print(f'{self.name} Eine Zahl zwischen 1 bis 7')
         x = int()
@@ -126,6 +192,18 @@ class Mensch(Spieler):
 
 
 class Computer(Spieler):
+    """
+    Attributes
+    ----------
+    farbe: str
+        Defaultwert ist C
+    name: str
+        Defaultname ist Computer
+    Methods
+    -------
+    ziehen(self)
+        Erlaubt dem Spieler einen Zug zu machen
+    """
 
     def __init__(self):
         super().__init__('C', 'Computer')
@@ -135,9 +213,12 @@ class Computer(Spieler):
 
     def ziehen(self) -> int:
         """
-        Computer gibt einen gültigen Zug ab
+        Computer gibt einen gültigen Zug ab.
         Der Zug ist eine Zufallszahl zwischen 0 und 6.
-        :return: Wert für Zug
+        Returns
+        -------
+        int
+            Wert für Zug
         """
         spalte = randint(0, 6)
         return spalte
@@ -148,7 +229,10 @@ def spiel_konfigurieren() -> tuple[Spieler, Spieler]:
     Fragt nach den Einstellungen für ein neues Spiel. Die Optionen sind 'S' für Multiplayer-Modus und 'C',
     um gegen den Computer zu spielen.
     Name und Farbe für Spieler wird erfragt.
-    :return: Die Spieler eines neuen Spiels.
+    Returns
+    -------
+    tuple of Spieler, Spieler
+        Die Spieler eines neuen Spiels.
     """
     print("Bitte den Spielmodus auswählen: \n S steht für Multiplayer-Modus und C für den Computer")
     s1 = str()
