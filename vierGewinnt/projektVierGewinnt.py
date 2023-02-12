@@ -22,7 +22,7 @@ class Spielfeld:
                     self.spielfeld_ausgeben()
                     return 1
         else:
-            print('Kein gültiger Zug')  # TODO: Entscheiden: soll das hier ausgegeben werden oder im Zuge von main
+            print('Kein gültiger Zug')
             return 0
 
     @property
@@ -69,7 +69,7 @@ class Spielfeld:
 
     def spielfeld_ausgeben(self):
         """
-        Wurde verkehrt umgesetzt, da es einfacher ist.
+        Gibt das aktuelle Spielfeld Zeile für Zeile aus. Der Index 0 ist die tiefste Zeile.
         :return: Gibt nichts zurueck.
         """
         for z in range(len(self.__grid) - 1, -1, -1):
@@ -108,11 +108,12 @@ class Mensch(Spieler):
         :return: Spalte als int, -1 bei ungültigem Input
         """
         print(f'{self.name} Eine Zahl zwischen 1 bis 7')
-        x = None
+        x = int()
         try:
             x = int(input())
         except ValueError:
             print(f'Bitte eine Zahl zwischen 1 und 7 angeben.')
+            return -1
         if x == 0:
             return -10
         return x - 1
@@ -144,21 +145,26 @@ class Computer(Spieler):
 
 def spiel_konfigurieren() -> tuple[Spieler, Spieler]:
     """
-    Fragt nach den Einstellungen für ein neues Spiel. Die Optionen sind 'S' für Multiplayer-Modus und 'C', um gegen den Computer zu spielen.
+    Fragt nach den Einstellungen für ein neues Spiel. Die Optionen sind 'S' für Multiplayer-Modus und 'C',
+    um gegen den Computer zu spielen.
     Name und Farbe für Spieler wird erfragt.
     :return: Die Spieler eines neuen Spiels.
     """
     print("Bitte den Spielmodus auswählen: \n S steht für Multiplayer-Modus und C für den Computer")
-    s1 = None
-    gegner = input('Modus: ')
-    if gegner == 'C':
-        s1 = Computer()
-    elif gegner == 'S':
-        name1 = input('SpielerIn 1 bitte Name angeben:')
-        farbe1 = input('SpielerIn 1 bitte Farbe wählen:')
-        s1 = Mensch(farbe1, name1)
-    else:
-        print('nicht gueltig')
+    s1 = str()
+    falsche_eingabe = True
+    while falsche_eingabe:
+        gegner = input('Modus: ')
+        if gegner == 'C':
+            s1 = Computer()
+            falsche_eingabe = False
+        elif gegner == 'S':
+            name1 = input('SpielerIn 1 bitte Name angeben:')
+            farbe1 = input('SpielerIn 1 bitte Farbe wählen:')
+            s1 = Mensch(farbe1, name1)
+            falsche_eingabe = False
+        else:
+            print('Ungültige Eingabe.\n Bitte S oder C wählen.')
     name2 = input('SpielerIn 2 bitte Name angeben:')
     farbe2 = input('SpielerIn 2 bitte Farbe wählen:')
     s2 = Mensch(farbe2, name2)
@@ -182,7 +188,7 @@ if __name__ == '__main__':
             gueltig = grid.spielfeld_aktualisieren(spalte, an_der_Reihe.farbe)
         gewonnen = grid.gewinn_abfrage(an_der_Reihe.farbe)
         if gewonnen:
-            print(f'an_der_reihe')
+            print(f'Bravo! {an_der_Reihe.name} hat gewonnen.')
             weitermachen = False
         if an_der_Reihe == spieler1:
             an_der_Reihe = spieler2

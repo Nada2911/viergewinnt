@@ -1,5 +1,5 @@
+import mock
 import unittest
-from unittest import mock
 from vierGewinnt.projektVierGewinnt import Spieler, Spielfeld, Mensch, Computer, spiel_konfigurieren
 
 
@@ -37,6 +37,18 @@ class MyTestCase(unittest.TestCase):
                                  ['X', 'X', 'X', 'X', 'X', 'X', 'X']]
         self.assertEqual(self.feld.grid, anfangs_konfiguration)
 
+    def test_repr(self):
+        erg1 = 'Computer Name C Farbe'
+        erg2 = 'Susi Name K Farbe'
+        erg3 = 'Susu Name O Farbe'
+        erg4 = "grid:[['X', 'X', 'X', 'X', 'X', 'X', 'X'], ['X', 'X', 'X', 'X', 'X', 'X', 'X'], " \
+               "['X', 'X', 'X', 'X', 'X', 'X', 'X'], ['X', 'X', 'X', 'X', 'X', 'X', 'X'], " \
+               "['X', 'X', 'X', 'X', 'X', 'X', 'X'], ['X', 'X', 'X', 'X', 'X', 'X', 'X']]"
+        self.assertEqual(repr(self.s1), erg1)
+        self.assertEqual(repr(self.s2), erg2)
+        self.assertEqual(repr(self.s3), erg3)
+        self.assertEqual(repr(self.feld), erg4)
+
     def test_gueltig(self):
         self.assertTrue(self.feld.gueltig(5))
         self.assertTrue(self.feld.gueltig(4))
@@ -44,11 +56,11 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(self.feld.gueltig(10))
         self.assertFalse(self.feld.gueltig(12))
 
-
     def test_aktualisieren(self):
         for i in range(6):
             self.assertEqual(self.feld.spielfeld_aktualisieren(2, 'F'), 1)
         self.assertEqual(self.feld.spielfeld_aktualisieren(2, 'F'), 0)
+        self.assertEqual(self.feld.spielfeld_aktualisieren(39, 'F'), 0)
 
     def test_gewinn_abfrage(self):
         # vertikale Gewinnposition wird getestet
@@ -85,7 +97,7 @@ class MyTestCase(unittest.TestCase):
         zug = [0, 1, 2, 3, 4, 5, 6]
         self.assertIn(self.s1.ziehen(), zug)
 
-    @mock.patch('Projekt.input', create=True)
+    @mock.patch('vierGewinnt.projektVierGewinnt.input', create=True)
     def test_ziehen_Mensch(self, mocked_input):
         mocked_input.side_effect = ['B']
         erg = self.s2.ziehen()
@@ -94,7 +106,7 @@ class MyTestCase(unittest.TestCase):
         erg1 = self.s2.ziehen()
         self.assertEqual(erg1, 3)
 
-    @mock.patch('Projekt.input', create=True)
+    @mock.patch('vierGewinnt.projektVierGewinnt.input', create=True)
     def test_spielkonfiguration(self, mocked_input):
         mocked_input.side_effect = ['S', 'Susi', 'rot', 'Babsi', 'blau']
         erg1, erg2 = spiel_konfigurieren()
@@ -105,7 +117,7 @@ class MyTestCase(unittest.TestCase):
         self.assertIsInstance(erg1, Mensch)
         self.assertIsInstance(erg2, Mensch)
 
-    @mock.patch('Projekt.input', create=True)
+    @mock.patch('vierGewinnt.projektVierGewinnt.input', create=True)
     def test_computergegner_konfiguration(self, mocked_input):
         mocked_input.side_effect = ['C', 'Susi', 'rot']
         erg3, erg4 = spiel_konfigurieren()
